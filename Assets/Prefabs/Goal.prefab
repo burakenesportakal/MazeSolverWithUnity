@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2376095171509974816}
-  - component: {fileID: 8630741823718609108}
+  - component: {fileID: 7162626138371193245}
   m_Layer: 7
   m_Name: Goal
   m_TagString: Goal
@@ -34,7 +34,7 @@ Transform:
   - {fileID: 4785840544084538028}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &8630741823718609108
+--- !u!65 &7162626138371193245
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -53,8 +53,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.7676431, y: 1.4181195, z: 0.122311115}
-  m_Center: {x: 0.07624215, y: -0.30648237, z: -0.21099126}
+  m_Size: {x: 1, y: 1.5169159, z: 1}
+  m_Center: {x: 0, y: -0.2584582, z: 0}
 --- !u!1 &2439139072966974303
 GameObject:
   m_ObjectHideFlags: 0

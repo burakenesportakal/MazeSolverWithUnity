@@ -7,14 +7,16 @@ public class MazeGenerator : MonoBehaviour
     int width;
     int height;
 
+    public Vector3 GoalWorldPosition { get; private set; }
+
     [Header("Maze Prefabs")]
     public GameObject wallPrefab;
     public GameObject pathPrefab;
     public GameObject startFlagPrefab;
     public GameObject goalFlagPrefab;
     public GameObject playerPrefab;
-
     public Transform mazeParent;
+
 
     public int[,] maze;
     public GameObject[,] tiles;
@@ -142,8 +144,13 @@ public class MazeGenerator : MonoBehaviour
 
         if (GameManager.Instance.selectedSolver == SolverType.Manual)
         {
-            startPos = new Vector3(1*spacing, 1, 1 * spacing);  
-            Instantiate(playerPrefab, startPos, Quaternion.identity);   
+            startPos = new Vector3(1 * spacing, 1, 1 * spacing);
+            Instantiate(playerPrefab, startPos, Quaternion.identity);
         }
+
+        GoalWorldPosition = new Vector3((width - 2) * spacing, 0.5f, (height - 2) * spacing);
+
+        Instantiate(goalFlagPrefab, GoalWorldPosition, Quaternion.identity, mazeParent);
     }
+    
 }

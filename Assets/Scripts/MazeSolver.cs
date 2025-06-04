@@ -11,6 +11,18 @@ public class MazeSolver : MonoBehaviour
     private Vector2Int goal;
 
     public float stepDelay = 0.01f;
+    public MazeGenerator mazeGenerator = new MazeGenerator();
+    [SerializeField] public GameObject victoryParticlePrefab1;
+    [SerializeField] public GameObject victoryParticlePrefab2;
+    [SerializeField] public GameObject victoryParticlePrefab3;
+    public AudioClip victoryClip;
+    private AudioSource audioSource;
+
+    void Awake()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
+
 
     public void Initialize(int[,] mazeData, GameObject[,] tileRefs)
     {
@@ -201,12 +213,18 @@ public class MazeSolver : MonoBehaviour
 
     IEnumerator TracePath(Vector2Int current, Dictionary<Vector2Int, Vector2Int> cameFrom)
     {
+        SpawnVictoryEffect();
         while (cameFrom.ContainsKey(current))
         {
             current = cameFrom[current];
             tiles[current.x, current.y].GetComponent<Renderer>().material.color = Color.green;
             yield return new WaitForSeconds(stepDelay / 2f);
+
         }
+        Timer.Instance.StopTimer();
+        yield return new WaitForSeconds(1.5f); // opsiyonel küçük bekleme
+        FindObjectOfType<FinishPanelManager>().ShowPause();
+
     }
 
     bool IsValid(Vector2Int pos)
@@ -225,4 +243,23 @@ public class MazeSolver : MonoBehaviour
     {
         return Mathf.Abs(a.x - b.x) + Mathf.Abs(a.y - b.y); // Manhattan
     }
+
+
+
+
+    private void SpawnVictoryEffect()
+    {
+        Vector3 goalPos = FindObjectOfType<MazeGenerator>().GoalWorldPosition;
+        Instantiate(victoryParticlePrefab1, goalPos, Quaternion.identity);
+        Instantiate(victoryParticlePrefab2, goalPos, Quaternion.identity);
+        Instantiate(victoryParticlePrefab3, goalPos, Quaternion.identity);
+        if (victoryClip != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(victoryClip);
+        }
+    }
+
+    
+
+    
 }
