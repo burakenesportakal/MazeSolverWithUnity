@@ -4,111 +4,225 @@ using UnityEngine;
 
 public class MazeSolver : MonoBehaviour
 {
-    // Maze'in matris olarak tutulduğu değişken (0 = yol, 1 = duvar)
     private int[,] maze;
-
-    // Her maze hücresi için sahnedeki GameObject referansları (labirent kareleri)
     private GameObject[,] tiles;
 
-    // DFS algoritmasında kullanılan stack yapısı
-    private Stack<Vector2Int> stack;
-
-    // Hangi hücrelerin ziyaret edildiğini tutan boolean dizi
-    private bool[,] visited;
-
-    // Her hücrenin hangi hücreden geldiğini tutan sözlük (backtracking için)
-    private Dictionary<Vector2Int, Vector2Int> cameFrom;
-
-    // Her adım arasında bekleme süresi (güzel görünüm için animasyon gibi düşünülebilir)
-    public float stepDelay = 0.01f;
-
-    // Başlangıç ve hedef noktaları (labirent koordinatları)
     private Vector2Int start;
     private Vector2Int goal;
 
-    // MazeSolver başlatılırken çağrılır, labirent verisini ve tile referanslarını alır
+    public float stepDelay = 0.01f;
+
     public void Initialize(int[,] mazeData, GameObject[,] tileRefs)
     {
-        maze = mazeData; // Labirent matrisi
-        tiles = tileRefs; // Sahnedeki kareler
-        stack = new Stack<Vector2Int>(); // Yeni boş stack oluştur
-        visited = new bool[maze.GetLength(0), maze.GetLength(1)]; // Ziyaret dizisini oluştur
-        cameFrom = new Dictionary<Vector2Int, Vector2Int>(); // Backtracking için boş sözlük
+        maze = mazeData;
+        tiles = tileRefs;
 
-        // Başlangıç hücresi (genellikle sol üstten biraz içeride)
         start = new Vector2Int(1, 1);
-        // Hedef hücresi (genellikle sağ altta biraz içeride)
         goal = new Vector2Int(maze.GetLength(0) - 2, maze.GetLength(1) - 2);
 
-        // Çözüm algoritmasını başlat (Coroutine ile animasyonlu)
-        StartCoroutine(Solve());
+        SolverType solver = GameManager.Instance.selectedSolver;
+
+        if (solver == SolverType.Manual)
+            return;
+
+        switch (solver)
+        {
+            case SolverType.DFS: StartCoroutine(SolveDFS()); break;
+            case SolverType.BFS: StartCoroutine(SolveBFS()); break;
+            case SolverType.Dijkstra: StartCoroutine(SolveDijkstra()); break;
+            case SolverType.AStar: StartCoroutine(SolveAStar()); break;
+        }
     }
 
-    // Labirent çözüm algoritması olarak DFS kullanır
-    IEnumerator Solve()
+    IEnumerator SolveDFS()
     {
-        stack.Push(start); // Başlangıç hücresini yığına ekle
+        Stack<Vector2Int> stack = new Stack<Vector2Int>();
+        bool[,] visited = new bool[maze.GetLength(0), maze.GetLength(1)];
+        Dictionary<Vector2Int, Vector2Int> cameFrom = new Dictionary<Vector2Int, Vector2Int>();
 
-        // Stack boşalana kadar devam et
+        stack.Push(start);
+        Timer.Instance.StartTimer();
+
         while (stack.Count > 0)
         {
-            Vector2Int current = stack.Pop(); // Yığından bir hücre çıkar
+            Vector2Int current = stack.Pop();
+            if (!IsValid(current) || visited[current.x, current.y]) continue;
 
-            // Hücre geçerli değilse veya daha önce ziyaret edildiyse atla
-            if (!IsValid(current) || visited[current.x, current.y])
-                continue;
-
-            visited[current.x, current.y] = true; // Hücreyi ziyaret edilmiş olarak işaretle
-
-            // Hücreyi mavi renge boya (geçilen yol animasyonu için)
+            visited[current.x, current.y] = true;
             tiles[current.x, current.y].GetComponent<Renderer>().material.color = Color.blue;
-
-            // Biraz bekle ki animasyon gözlemlenebilsin
             yield return new WaitForSeconds(stepDelay);
 
-            // Eğer hedefe ulaştıysak
             if (current == goal)
             {
-                // Çözüm yolunu geri izleyerek göster
-                StartCoroutine(TracePath(current));
-                yield break; // Algoritmayı durdur
+                Timer.Instance.StopTimer();
+                StartCoroutine(TracePath(current, cameFrom));
+                yield break;
             }
 
-            // Komşu hücreleri (yukarı, aşağı, sol, sağ) sırayla kontrol et
-            foreach (var dir in new[] { Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right })
+            foreach (Vector2Int dir in GetDirections())
             {
-                Vector2Int next = current + dir; // Komşu hücre koordinatları
-
-                // Komşu geçerli ve ziyaret edilmemişse
+                Vector2Int next = current + dir;
                 if (IsValid(next) && !visited[next.x, next.y])
                 {
-                    stack.Push(next); // Komşuyu yığına ekle
-
-                    // Eğer komşu için henüz yol bilgisi yoksa kaydet
-                    if (!cameFrom.ContainsKey(next))
-                        cameFrom[next] = current; // Komşunun geldiği hücreyi kaydet
+                    stack.Push(next);
+                    if (!cameFrom.ContainsKey(next)) cameFrom[next] = current;
                 }
             }
         }
     }
 
-    // Çözüm yolunu geri izleyerek yeşil renkle gösteren coroutine
-    IEnumerator TracePath(Vector2Int current)
+    IEnumerator SolveBFS()
     {
-        // Başlangıçtan hedefe giden yolu geriye doğru takip et
-        while (cameFrom.ContainsKey(current))
+        Queue<Vector2Int> queue = new Queue<Vector2Int>();
+        bool[,] visited = new bool[maze.GetLength(0), maze.GetLength(1)];
+        Dictionary<Vector2Int, Vector2Int> cameFrom = new Dictionary<Vector2Int, Vector2Int>();
+
+        queue.Enqueue(start);
+        visited[start.x, start.y] = true;
+        Timer.Instance.StartTimer();
+
+        while (queue.Count > 0)
         {
-            current = cameFrom[current]; // Önceki hücreye geç
-            tiles[current.x, current.y].GetComponent<Renderer>().material.color = Color.green; // Hücreyi yeşil boya
-            yield return new WaitForSeconds(stepDelay / 2); // Daha hızlı ilerle
+            Vector2Int current = queue.Dequeue();
+            tiles[current.x, current.y].GetComponent<Renderer>().material.color = Color.blue;
+            yield return new WaitForSeconds(stepDelay);
+
+            if (current == goal)
+            {
+                Timer.Instance.StopTimer();
+                StartCoroutine(TracePath(current, cameFrom));
+                yield break;
+            }
+
+            foreach (Vector2Int dir in GetDirections())
+            {
+                Vector2Int next = current + dir;
+                if (IsValid(next) && !visited[next.x, next.y])
+                {
+                    queue.Enqueue(next);
+                    visited[next.x, next.y] = true;
+                    cameFrom[next] = current;
+                }
+            }
         }
     }
 
-    // Verilen pozisyonun labirent içinde olup olmadığını ve yol olup olmadığını kontrol eder
+    IEnumerator SolveDijkstra()
+    {
+        var pq = new PriorityQueue<Vector2Int>();
+        var distance = new Dictionary<Vector2Int, int>();
+        var cameFrom = new Dictionary<Vector2Int, Vector2Int>();
+        bool[,] visited = new bool[maze.GetLength(0), maze.GetLength(1)];
+
+        pq.Enqueue(start, 0);
+        distance[start] = 0;
+        Timer.Instance.StartTimer();
+
+        while (pq.Count > 0)
+        {
+            Vector2Int current = pq.Dequeue();
+
+            if (visited[current.x, current.y]) continue;
+            visited[current.x, current.y] = true;
+
+            tiles[current.x, current.y].GetComponent<Renderer>().material.color = Color.blue;
+            yield return new WaitForSeconds(stepDelay);
+
+            if (current == goal)
+            {
+                Timer.Instance.StopTimer();
+                StartCoroutine(TracePath(current, cameFrom));
+                yield break;
+            }
+
+            foreach (var dir in GetDirections())
+            {
+                Vector2Int next = current + dir;
+                if (!IsValid(next) || visited[next.x, next.y]) continue;
+
+                int newDist = distance[current] + 1;
+
+                if (!distance.ContainsKey(next) || newDist < distance[next])
+                {
+                    distance[next] = newDist;
+                    pq.Enqueue(next, newDist);
+                    cameFrom[next] = current;
+                }
+            }
+        }
+    }
+
+    IEnumerator SolveAStar()
+    {
+        var openSet = new PriorityQueue<Vector2Int>();
+        var gScore = new Dictionary<Vector2Int, int>();
+        var fScore = new Dictionary<Vector2Int, float>();
+        var cameFrom = new Dictionary<Vector2Int, Vector2Int>();
+        bool[,] visited = new bool[maze.GetLength(0), maze.GetLength(1)];
+
+        gScore[start] = 0;
+        fScore[start] = Heuristic(start, goal);
+        openSet.Enqueue(start, fScore[start]);
+        Timer.Instance.StartTimer();
+
+        while (openSet.Count > 0)
+        {
+            Vector2Int current = openSet.Dequeue();
+
+            if (visited[current.x, current.y]) continue;
+            visited[current.x, current.y] = true;
+
+            tiles[current.x, current.y].GetComponent<Renderer>().material.color = Color.blue;
+            yield return new WaitForSeconds(stepDelay);
+
+            if (current == goal)
+            {
+                Timer.Instance.StopTimer();
+                StartCoroutine(TracePath(current, cameFrom));
+                yield break;
+            }
+
+            foreach (Vector2Int dir in GetDirections())
+            {
+                Vector2Int next = current + dir;
+                if (!IsValid(next) || visited[next.x, next.y]) continue;
+
+                int tentativeG = gScore[current] + 1;
+                if (!gScore.ContainsKey(next) || tentativeG < gScore[next])
+                {
+                    gScore[next] = tentativeG;
+                    fScore[next] = tentativeG + Heuristic(next, goal);
+                    openSet.Enqueue(next, fScore[next]);
+                    cameFrom[next] = current;
+                }
+            }
+        }
+    }
+
+    IEnumerator TracePath(Vector2Int current, Dictionary<Vector2Int, Vector2Int> cameFrom)
+    {
+        while (cameFrom.ContainsKey(current))
+        {
+            current = cameFrom[current];
+            tiles[current.x, current.y].GetComponent<Renderer>().material.color = Color.green;
+            yield return new WaitForSeconds(stepDelay / 2f);
+        }
+    }
+
     bool IsValid(Vector2Int pos)
     {
-        return pos.x >= 0 && pos.x < maze.GetLength(0) &&  // X sınırı
-               pos.y >= 0 && pos.y < maze.GetLength(1) &&  // Y sınırı
-               maze[pos.x, pos.y] == 0;                      // Yol olup olmadığı (0 = yol, 1 = duvar)
+        return pos.x >= 0 && pos.x < maze.GetLength(0) &&
+               pos.y >= 0 && pos.y < maze.GetLength(1) &&
+               maze[pos.x, pos.y] == 0;
+    }
+
+    Vector2Int[] GetDirections()
+    {
+        return new[] { Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right };
+    }
+
+    float Heuristic(Vector2Int a, Vector2Int b)
+    {
+        return Mathf.Abs(a.x - b.x) + Mathf.Abs(a.y - b.y); // Manhattan
     }
 }
