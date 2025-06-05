@@ -13,6 +13,7 @@ public class PlayerControl : MonoBehaviour
     private Animator animator;
     private Vector3 movement;
     public float turnSpeed = 3f;
+    float moveX, moveZ;
 
     [SerializeField] public GameObject victoryParticlePrefab1;
     [SerializeField] public GameObject victoryParticlePrefab2;
@@ -21,6 +22,7 @@ public class PlayerControl : MonoBehaviour
     private AudioSource audioSource;
 
     private bool timerStarted = false;
+    private bool isMoving = false;
     bool canMove = true;
     void Awake()
     {
@@ -33,8 +35,18 @@ public class PlayerControl : MonoBehaviour
     void Update()
     {
         if (!canMove) return;
-        float moveX = Input.GetAxisRaw("Horizontal");
-        float moveZ = Input.GetAxisRaw("Vertical");
+        PlayerMovementController();
+        AnimationController();
+    }
+    private void AnimationController()
+    {
+        animator.SetFloat("Horizontal", moveX, 0.1f, Time.deltaTime);
+        animator.SetFloat("Vertical", moveZ, 0.1f, Time.deltaTime);
+    }
+    private void PlayerMovementController()
+    {
+        moveX = Input.GetAxisRaw("Horizontal");
+        moveZ = Input.GetAxisRaw("Vertical");
         if ((moveX != 0 || moveZ != 0) && !timerStarted)
         {
             Timer.Instance.StartTimer();
@@ -43,16 +55,12 @@ public class PlayerControl : MonoBehaviour
 
         movement = new Vector3(moveX, 0f, moveZ).normalized;
 
-        // Animasyon parametreleri
-        animator.SetFloat("Horizontal", moveX, 0.1f, Time.deltaTime);
-        animator.SetFloat("Vertical", moveZ, 0.1f, Time.deltaTime);
-
-        // ✅ DÖNÜŞ: Eğer hareket varsa, karakteri o yöne çevir
         if (movement != Vector3.zero)
         {
             Quaternion toRotation = Quaternion.LookRotation(movement, Vector3.up);
             transform.rotation = Quaternion.Slerp(transform.rotation, toRotation, turnSpeed * Time.deltaTime);
         }
+
     }
 
     private void OnTriggerEnter(Collider other)
@@ -76,7 +84,7 @@ public class PlayerControl : MonoBehaviour
     }
     void FixedUpdate()
     {
-        // Hareket uygula (physics tabanlı)
+
         rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
     }
     IEnumerator ShowFinishScreenDelayed(float delay)
@@ -84,6 +92,7 @@ public class PlayerControl : MonoBehaviour
         yield return new WaitForSeconds(delay);
         FindObjectOfType<FinishPanelManager>().ShowPause();
     }
+
 
     private void PlaySound()
     {
