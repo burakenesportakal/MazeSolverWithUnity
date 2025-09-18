@@ -1,4 +1,5 @@
 🧠 PathFinder X
+
 A Maze Solver Experience Powered by Algorithms
 PathFinder X blends educational depth with puzzle-solving thrill. Whether you're into AI pathfinding or just love a good maze, this experience is designed to challenge and inspire.
 
