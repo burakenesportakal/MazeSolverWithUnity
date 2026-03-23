@@ -7,7 +7,7 @@
 
 <hr>
 
-<h2 align="center">📸 Ekran Görüntüleri ve Oynanış</h2>
+<h2 align="center">📸 Screen Shots and Gameplay</h2>
 
 <div align="center">
   <img width="347" height="195" alt="23B8uP" src="https://github.com/user-attachments/assets/e4f12671-0a29-4af7-89b7-f800c1cac78a" />
