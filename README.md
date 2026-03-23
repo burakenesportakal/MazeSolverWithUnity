@@ -8,17 +8,26 @@
 <hr>
 
 <h2 align="center">📸 Ekran Görüntüleri ve Oynanış</h2>
-<img width="347" height="195" alt="23B8uP" src="https://github.com/user-attachments/assets/8fd4585d-46f6-440c-8f28-07438f94058f" />
 
-![WCRHsi](https://github.com/user-attachments/assets/2fe07efb-d443-4134-a0cd-ad200f3658db)
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/8fd4585d-46f6-440c-8f28-07438f94058f" width="800" alt="Menü Görseli 1">
+  <br><br>
+  
+  <img src="https://github.com/user-attachments/assets/2fe07efb-d443-4134-a0cd-ad200f3658db" width="800" alt="Menü Görseli 2">
+  <br><br>
 
-![j04Ur_](https://github.com/user-attachments/assets/07c21b45-d764-465e-9460-af3ecf49604b)
+  <img src="https://github.com/user-attachments/assets/07c21b45-d764-465e-9460-af3ecf49604b" width="800" alt="Menü Görseli 3">
+  <br><br>
 
-![zXLZnR](https://github.com/user-attachments/assets/936484c3-9f16-48cb-b446-c93e743e8da1)
+  <img src="https://github.com/user-attachments/assets/936484c3-9f16-48cb-b446-c93e743e8da1" width="800" alt="Oyun İçi Görsel 1">
+  <br><br>
 
-![xGGOyg](https://github.com/user-attachments/assets/22dd720e-f952-4f4c-8cfd-9845c0bc4346)
+  <img src="https://github.com/user-attachments/assets/22dd720e-f952-4f4c-8cfd-9845c0bc4346" width="800" alt="Oyun İçi Görsel 2">
+  <br><br>
 
-![fsP9AC](https://github.com/user-attachments/assets/17872a5a-e176-44d2-ad7d-a30a8aa06d37)
+  <img src="https://github.com/user-attachments/assets/17872a5a-e176-44d2-ad7d-a30a8aa06d37" width="800" alt="Oyun İçi Görsel 3">
+</div>
+
 <hr>
 
 <h2>🎮 Game Modes</h2>
