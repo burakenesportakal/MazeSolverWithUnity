@@ -10,22 +10,18 @@
 <h2 align="center">📸 Ekran Görüntüleri ve Oynanış</h2>
 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/8fd4585d-46f6-440c-8f28-07438f94058f" width="800" alt="Menü Görseli 1">
+  <img width="347" height="195" alt="23B8uP" src="https://github.com/user-attachments/assets/e4f12671-0a29-4af7-89b7-f800c1cac78a" />
   <br><br>
-  
-  <img src="https://github.com/user-attachments/assets/2fe07efb-d443-4134-a0cd-ad200f3658db" width="800" alt="Menü Görseli 2">
+  ![WCRHsi](https://github.com/user-attachments/assets/d7da6b33-b138-4cda-8c0f-d0baf99f8d8c)
   <br><br>
+  ![j04Ur_](https://github.com/user-attachments/assets/0b84bd2a-1da9-41a3-b6e5-2b1f90784346)
+  <br><br>
+  ![zXLZnR](https://github.com/user-attachments/assets/9b954bc3-965d-4fc3-89f7-ab7ae0cf20df)
+  <br><br>
+  ![xGGOyg](https://github.com/user-attachments/assets/5ea6d4d5-eed1-483c-a5ce-7511459010a9)
+  <br><br>
+  ![fsP9AC](https://github.com/user-attachments/assets/4b9ba7c4-4cac-4771-8d5b-732523d91272)
 
-  <img src="https://github.com/user-attachments/assets/07c21b45-d764-465e-9460-af3ecf49604b" width="800" alt="Menü Görseli 3">
-  <br><br>
-
-  <img src="https://github.com/user-attachments/assets/936484c3-9f16-48cb-b446-c93e743e8da1" width="800" alt="Oyun İçi Görsel 1">
-  <br><br>
-
-  <img src="https://github.com/user-attachments/assets/22dd720e-f952-4f4c-8cfd-9845c0bc4346" width="800" alt="Oyun İçi Görsel 2">
-  <br><br>
-
-  <img src="https://github.com/user-attachments/assets/17872a5a-e176-44d2-ad7d-a30a8aa06d37" width="800" alt="Oyun İçi Görsel 3">
 </div>
 
 <hr>
