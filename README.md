@@ -19,23 +19,6 @@
 ![xGGOyg](https://github.com/user-attachments/assets/22dd720e-f952-4f4c-8cfd-9845c0bc4346)
 
 ![fsP9AC](https://github.com/user-attachments/assets/17872a5a-e176-44d2-ad7d-a30a8aa06d37)
-
-
-<table align="center">
-  <tr>
-    <td align="center">
-      <img src="https://github.com/senin-yukledigin-gorsel-1-urlsi" width="400" alt="Algorithmic Solver Mode">
-      <br>
-      <i>🔍 Algorithmic Solver in Action</i>
-    </td>
-    <td align="center">
-      <img src="https://github.com/senin-yukledigin-gorsel-2-urlsi" width="400" alt="Manual Mode Gameplay">
-      <br>
-      <i>🕹️ Manual Mode & UI</i>
-    </td>
-  </tr>
-</table>
-
 <hr>
 
 <h2>🎮 Game Modes</h2>
