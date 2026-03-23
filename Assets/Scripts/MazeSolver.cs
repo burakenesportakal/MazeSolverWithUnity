@@ -121,18 +121,18 @@ public class MazeSolver : MonoBehaviour
 
     IEnumerator SolveDijkstra()
     {
-        var pq = new PriorityQueue<Vector2Int>();
+        var priorityQueue = new PriorityQueue<Vector2Int>();
         var distance = new Dictionary<Vector2Int, int>();
         var cameFrom = new Dictionary<Vector2Int, Vector2Int>();
         bool[,] visited = new bool[maze.GetLength(0), maze.GetLength(1)];
 
-        pq.Enqueue(start, 0);
+        priorityQueue.Enqueue(start, 0);
         distance[start] = 0;
         Timer.Instance.StartTimer();
 
-        while (pq.Count > 0)
+        while (priorityQueue.Count > 0)
         {
-            Vector2Int current = pq.Dequeue();
+            Vector2Int current = priorityQueue.Dequeue();
 
             if (visited[current.x, current.y]) continue;
             visited[current.x, current.y] = true;
@@ -157,7 +157,7 @@ public class MazeSolver : MonoBehaviour
                 if (!distance.ContainsKey(next) || newDist < distance[next])
                 {
                     distance[next] = newDist;
-                    pq.Enqueue(next, newDist);
+                    priorityQueue.Enqueue(next, newDist);
                     cameFrom[next] = current;
                 }
             }
@@ -222,7 +222,7 @@ public class MazeSolver : MonoBehaviour
 
         }
         Timer.Instance.StopTimer();
-        yield return new WaitForSeconds(1.5f); // opsiyonel küçük bekleme
+        yield return new WaitForSeconds(1.5f); 
         FindObjectOfType<FinishPanelManager>().ShowPause();
 
     }
@@ -241,11 +241,8 @@ public class MazeSolver : MonoBehaviour
 
     float Heuristic(Vector2Int a, Vector2Int b)
     {
-        return Mathf.Abs(a.x - b.x) + Mathf.Abs(a.y - b.y); // Manhattan
+        return Mathf.Abs(a.x - b.x) + Mathf.Abs(a.y - b.y); //manhattan
     }
-
-
-
 
     private void SpawnVictoryEffect()
     {
@@ -258,8 +255,4 @@ public class MazeSolver : MonoBehaviour
             audioSource.PlayOneShot(victoryClip);
         }
     }
-
-    
-
-    
 }

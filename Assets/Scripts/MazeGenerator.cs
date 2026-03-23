@@ -140,7 +140,7 @@ public class MazeGenerator : MonoBehaviour
         Instantiate(startFlagPrefab, startPos, Quaternion.identity, mazeParent);
 
         GameObject goal = Instantiate(goalFlagPrefab, goalPos, Quaternion.identity, mazeParent);
-        goal.tag = "Goal"; // Manuel çözümde tespiti için
+        goal.tag = "Goal"; //for manual solve
 
         if (GameManager.Instance.selectedSolver == SolverType.Manual)
         {

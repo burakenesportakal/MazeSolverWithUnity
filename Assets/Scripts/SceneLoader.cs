@@ -13,7 +13,7 @@ public class SceneLoader : MonoBehaviour
 
     IEnumerator LoadAsync()
     {
-        yield return new WaitForSeconds(2f); // isteğe bağlı geçiş süresi
+        yield return new WaitForSeconds(2f);
         AsyncOperation op = SceneManager.LoadSceneAsync(nextScene);
 
         while (!op.isDone)

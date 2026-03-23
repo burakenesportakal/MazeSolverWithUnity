@@ -5,7 +5,7 @@ using TMPro;
 
 public class TextController : MonoBehaviour
 {
-public TMP_Text textComponent;
+    public TMP_Text textComponent;
     public string fullText;
     public float delay = 0.05f;
 

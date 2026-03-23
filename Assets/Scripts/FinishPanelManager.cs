@@ -25,7 +25,7 @@ public class FinishPanelManager : MonoBehaviour
     }
     public void ShowPause()
         {
-            float finalTime = Timer.Instance.GetElapsedTime(); // artık sabit
+            float finalTime = Timer.Instance.GetElapsedTime();
             timeText.text = "Time: " + finalTime.ToString("F2") + "s";
 
             pausePanel.SetActive(true);

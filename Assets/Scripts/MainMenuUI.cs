@@ -9,7 +9,7 @@ public class MainMenuUI : MonoBehaviour
 
     public void StartGame()
     {
-        // Maze size seçimi
+        //choose the size of maze
         switch (sizeDropdown.value)
         {
             case 0:
@@ -26,10 +26,9 @@ public class MainMenuUI : MonoBehaviour
                 break;
         }
 
-        // Solver algoritması seçimi
+        //choose the solve algorithm
         GameManager.Instance.selectedSolver = (SolverType)solverDropdown.value;
 
-        // Maze sahnesine geç
         SceneLoader.nextScene = "MazeScene";
         SceneManager.LoadScene("LoadingScene");
     }

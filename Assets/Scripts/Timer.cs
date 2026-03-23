@@ -25,7 +25,6 @@ public class Timer : MonoBehaviour
         }
         else
         {
-            // Zaman durunca sabit zamanı göster
             timerText.text = "Time: " + finalTime.ToString("F2", CultureInfo.InvariantCulture) + "s";
         }
     }
